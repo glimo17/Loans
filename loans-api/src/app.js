@@ -42,7 +42,14 @@ const createApp = () => {
 
   app.use((err, req, res, next) => {
     console.error(err);
-    res.status(500).json({ message: 'Internal server error' });
+    
+    if (err && ['ESOCKET', 'ETIMEOUT', 'ELOGIN', 'ENOTOPEN'].includes(err.code)) {
+      return res.status(503).json({
+        message: 'Database connection is unavailable. Check SQL Server instance and connection settings.'
+      });
+    }
+
+    return res.status(500).json({ message: 'Internal server error' });
   });
 
   return app;
