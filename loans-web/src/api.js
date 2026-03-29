@@ -26,3 +26,20 @@ export const createResourceItem = async (resource, payload) => {
 
   return response.json();
 };
+
+export const updateResourceItem = async (resource, id, payload) => {
+  const response = await fetch(`${API_BASE_URL}/${resource}/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    const errorPayload = await response.json().catch(() => ({}));
+    throw new Error(errorPayload.message || `Failed to update ${resource}`);
+  }
+
+  return response.json();
+};

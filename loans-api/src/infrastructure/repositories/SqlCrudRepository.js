@@ -3,16 +3,22 @@ const { getPool, sql } = require('../db/sqlServer');
 class SqlCrudRepository {
   constructor(tableConfig) {
     this.config = tableConfig;
-    const projectionColumns = [
+    const baseColumns = [
       `${tableConfig.idColumn} AS ${tableConfig.idField}`,
       ...tableConfig.columns.map((c) => `${c.column} AS ${c.field}`)
     ];
 
     if (tableConfig.timestamp) {
-      projectionColumns.push(`${tableConfig.timestamp.column} AS ${tableConfig.timestamp.field}`);
+      baseColumns.push(`${tableConfig.timestamp.column} AS ${tableConfig.timestamp.field}`);
     }
 
-    this.selectProjection = projectionColumns.join(',\n        ');
+    this.selectProjection = baseColumns.join(',\n        ');
+    this.insertOutputProjection = baseColumns
+      .map((column) => column.replace(/^([A-Za-z0-9_]+)/, 'inserted.$1'))
+      .join(', ');
+    this.deleteOutputProjection = baseColumns
+      .map((column) => column.replace(/^([A-Za-z0-9_]+)/, 'deleted.$1'))
+      .join(', ');
   }
 
   async getAll() {
@@ -56,7 +62,7 @@ class SqlCrudRepository {
     const result = await request.query(`
       INSERT INTO dbo.${this.config.table} (${columnNames})
       OUTPUT
-        ${this.selectProjection.replace(/\n\s*/g, ' ')}
+        ${this.insertOutputProjection}
       VALUES (${values})
     `);
 
@@ -84,7 +90,7 @@ class SqlCrudRepository {
       UPDATE dbo.${this.config.table}
       SET ${setClause}
       OUTPUT
-        ${this.selectProjection.replace(/\n\s*/g, ' ')}
+        ${this.insertOutputProjection}
       WHERE ${this.config.idColumn} = @id
     `);
 
@@ -98,7 +104,7 @@ class SqlCrudRepository {
       .query(`
         DELETE FROM dbo.${this.config.table}
         OUTPUT
-          ${this.selectProjection.replace(/\n\s*/g, ' ')}
+          ${this.deleteOutputProjection}
         WHERE ${this.config.idColumn} = @id
       `);
 
