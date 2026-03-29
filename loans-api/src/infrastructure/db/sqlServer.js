@@ -1,12 +1,31 @@
-const sql = require('mssql');
 const config = require('../../shared/config');
+const sql = config.db.driver === 'msnodesqlv8'
+  ? require('mssql/msnodesqlv8')
+  : require('mssql');
 
 const poolPromises = new Map();
 
-const buildDbConfig = (databaseName) => ({
-  ...config.db,
-  database: databaseName
-});
+const buildDbConfig = (databaseName) => {
+  if (config.db.driver === 'msnodesqlv8') {
+    return {
+      driver: 'msnodesqlv8',
+      user: config.db.user,
+      password: config.db.password,
+      server: config.db.server,
+      database: databaseName,
+      options: {
+        encrypt: config.db.options.encrypt,
+        trustServerCertificate: config.db.options.trustServerCertificate,
+        trustedConnection: config.db.useTrustedConnection
+      }
+    };
+  }
+
+  return {
+    ...config.db,
+    database: databaseName
+  };
+};
 
 const getPool = async (databaseName = config.db.database) => {
   if (!poolPromises.has(databaseName)) {

@@ -43,7 +43,7 @@ const createApp = () => {
   app.use((err, req, res, next) => {
     console.error(err);
     
-    if (err && ['ESOCKET', 'ETIMEOUT', 'ELOGIN', 'ENOTOPEN'].includes(err.code)) {
+    if (err && ['ESOCKET', 'ETIMEOUT', 'ELOGIN', 'ENOTOPEN', 'ENOTFOUND'].includes(err.code)) {
       return res.status(503).json({
         message: 'Database connection is unavailable. Check SQL Server instance and connection settings.'
       });
