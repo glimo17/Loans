@@ -48,16 +48,33 @@ const resolvedPort = explicitPort
     : 1433;
 
 const useTrustedConnection = parseBool(process.env.DB_TRUSTED_CONNECTION || trustedFromConnStr, false);
+const dbUser = process.env.DB_USER || parsedConnectionString.user || parsedConnectionString['user id'] || 'Geis';
+const dbPassword = process.env.DB_PASSWORD || parsedConnectionString.password || '123';
+const dbName = process.env.DB_NAME || parsedConnectionString.database || 'LoanSystemDB';
+
+const buildMsNodeSqlConnectionString = (databaseOverride) => {
+  const database = databaseOverride || dbName;
+  if (process.env.DB_CONNECTION_STRING) {
+    return process.env.DB_CONNECTION_STRING.replace(/Database\s*=\s*[^;]*/i, `Database=${database}`);
+  }
+
+  if (useTrustedConnection) {
+    return `Driver={ODBC Driver 17 for SQL Server};Server=${serverFromEnv};Database=${database};Trusted_Connection=Yes;TrustServerCertificate=Yes;`;
+  }
+
+  return `Driver={ODBC Driver 17 for SQL Server};Server=${serverFromEnv};Database=${database};Uid=${dbUser};Pwd=${dbPassword};TrustServerCertificate=Yes;`;
+};
 
 const config = {
   port: Number(process.env.PORT || 5000),
   db: dbDriver === 'msnodesqlv8'
     ? {
       driver: 'msnodesqlv8',
-      user: process.env.DB_USER || parsedConnectionString.user || parsedConnectionString['user id'] || 'Geis',
-      password: process.env.DB_PASSWORD || parsedConnectionString.password || '123',
+      user: dbUser,
+      password: dbPassword,
       server: serverFromEnv,
-      database: process.env.DB_NAME || parsedConnectionString.database || 'LoanSystemDB',
+      database: dbName,
+      connectionString: buildMsNodeSqlConnectionString(),
       options: {
         encrypt: parseBool(process.env.DB_ENCRYPT, false),
         trustServerCertificate: parseBool(process.env.DB_TRUST_SERVER_CERT, true),
@@ -67,10 +84,10 @@ const config = {
     }
     : {
       driver: 'tedious',
-      user: process.env.DB_USER || parsedConnectionString.user || parsedConnectionString['user id'] || 'Geis',
-      password: process.env.DB_PASSWORD || parsedConnectionString.password || '123',
+      user: dbUser,
+      password: dbPassword,
       server: serverHost,
-      database: process.env.DB_NAME || parsedConnectionString.database || 'LoanSystemDB',
+      database: dbName,
       port: resolvedPort,
       options: {
         encrypt: parseBool(process.env.DB_ENCRYPT, false),
@@ -80,5 +97,9 @@ const config = {
       useTrustedConnection
     }
 };
+
+if (config.db.driver === 'msnodesqlv8') {
+  config.buildMsNodeSqlConnectionString = buildMsNodeSqlConnectionString;
+}
 
 module.exports = config;

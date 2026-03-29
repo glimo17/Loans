@@ -9,10 +9,9 @@ const buildDbConfig = (databaseName) => {
   if (config.db.driver === 'msnodesqlv8') {
     return {
       driver: 'msnodesqlv8',
-      user: config.db.user,
-      password: config.db.password,
-      server: config.db.server,
-      database: databaseName,
+      connectionString: config.buildMsNodeSqlConnectionString
+        ? config.buildMsNodeSqlConnectionString(databaseName)
+        : config.db.connectionString,
       options: {
         encrypt: config.db.options.encrypt,
         trustServerCertificate: config.db.options.trustServerCertificate,
