@@ -31,6 +31,33 @@ npm start
 
 Frontend URL: `http://localhost:3000`
 
+## Docker deploy (API + Web + SQL Server)
+
+From workspace root:
+
+```bash
+docker compose up -d --build
+```
+
+Services:
+
+- Web: `http://localhost:3000`
+- API: `http://localhost:5000/api`
+- Swagger: `http://localhost:5000/api-docs`
+- SQL Server: `localhost:1433` (user `sa`)
+
+Stop all containers:
+
+```bash
+docker compose down
+```
+
+Stop and remove SQL data volume:
+
+```bash
+docker compose down -v
+```
+
 ## API resources (all CRUD endpoints)
 
 Every resource exposes:

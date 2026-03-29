@@ -1,15 +1,17 @@
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-export const getLoans = async () => {
-  const response = await fetch(`${API_BASE_URL}/loans`);
+export const getResourceItems = async (resource) => {
+  const response = await fetch(`${API_BASE_URL}/${resource}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch loans');
+    const errorPayload = await response.json().catch(() => ({}));
+    throw new Error(errorPayload.message || `Failed to fetch ${resource}`);
   }
+
   return response.json();
 };
 
-export const createLoan = async (payload) => {
-  const response = await fetch(`${API_BASE_URL}/loans`, {
+export const createResourceItem = async (resource, payload) => {
+  const response = await fetch(`${API_BASE_URL}/${resource}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -19,7 +21,7 @@ export const createLoan = async (payload) => {
 
   if (!response.ok) {
     const errorPayload = await response.json().catch(() => ({}));
-    throw new Error(errorPayload.message || 'Failed to create loan');
+    throw new Error(errorPayload.message || `Failed to create ${resource}`);
   }
 
   return response.json();
