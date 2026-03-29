@@ -20,6 +20,7 @@ const tableConfigs = [
       { column: 'RoleId', field: 'roleId', type: (sql) => sql.Int, required: true },
       { column: 'FirstName', field: 'firstName', type: (sql) => sql.VarChar(100), required: true },
       { column: 'LastName', field: 'lastName', type: (sql) => sql.VarChar(100), required: true },
+      { column: 'Username', field: 'username', type: (sql) => sql.VarChar(100), required: true },
       { column: 'Email', field: 'email', type: (sql) => sql.VarChar(150), required: true },
       { column: 'PasswordHash', field: 'passwordHash', type: (sql) => sql.VarChar(255), required: true },
       { column: 'IsActive', field: 'isActive', type: (sql) => sql.Bit }

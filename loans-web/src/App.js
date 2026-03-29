@@ -31,6 +31,7 @@ const resourceConfigs = [
       { name: 'roleId', label: 'ID Rol', type: 'number', required: true },
       { name: 'firstName', label: 'Nombre', type: 'text', required: true },
       { name: 'lastName', label: 'Apellido', type: 'text', required: true },
+      { name: 'username', label: 'Usuario', type: 'text', required: true },
       { name: 'email', label: 'Correo', type: 'email', required: true },
       { name: 'passwordHash', label: 'Contrasena', type: 'text', required: true },
       { name: 'isActive', label: 'Activo (1/0)', type: 'number', required: false }
@@ -208,7 +209,7 @@ function App() {
       const matchedUser = users.find((user) => {
         const isActive = user.isActive === undefined || Number(user.isActive) === 1;
         return isActive
-          && String(user.email).toLowerCase() === loginForm.username.toLowerCase()
+          && String(user.username).toLowerCase() === loginForm.username.toLowerCase()
           && String(user.passwordHash) === loginForm.password;
       });
 
