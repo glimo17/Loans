@@ -3,11 +3,16 @@ const { getPool, sql } = require('../db/sqlServer');
 class SqlCrudRepository {
   constructor(tableConfig) {
     this.config = tableConfig;
-    this.selectProjection = [
+    const projectionColumns = [
       `${tableConfig.idColumn} AS ${tableConfig.idField}`,
-      ...tableConfig.columns.map((c) => `${c.column} AS ${c.field}`),
-      'CreatedAt AS createdAt'
-    ].join(',\n        ');
+      ...tableConfig.columns.map((c) => `${c.column} AS ${c.field}`)
+    ];
+
+    if (tableConfig.timestamp) {
+      projectionColumns.push(`${tableConfig.timestamp.column} AS ${tableConfig.timestamp.field}`);
+    }
+
+    this.selectProjection = projectionColumns.join(',\n        ');
   }
 
   async getAll() {

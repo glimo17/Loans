@@ -4,6 +4,7 @@ const tableConfigs = [
     table: 'Roles',
     idColumn: 'RoleId',
     idField: 'roleId',
+    timestamp: { column: 'CreatedAt', field: 'createdAt' },
     columns: [
       { column: 'Name', field: 'name', type: (sql) => sql.VarChar(50), required: true },
       { column: 'Description', field: 'description', type: (sql) => sql.VarChar(255) }
@@ -14,6 +15,7 @@ const tableConfigs = [
     table: 'Users',
     idColumn: 'UserId',
     idField: 'userId',
+    timestamp: { column: 'CreatedAt', field: 'createdAt' },
     columns: [
       { column: 'RoleId', field: 'roleId', type: (sql) => sql.Int, required: true },
       { column: 'FirstName', field: 'firstName', type: (sql) => sql.VarChar(100), required: true },
@@ -38,6 +40,7 @@ const tableConfigs = [
     table: 'LoanProducts',
     idColumn: 'ProductId',
     idField: 'productId',
+    timestamp: { column: 'CreatedAt', field: 'createdAt' },
     columns: [
       { column: 'Name', field: 'name', type: (sql) => sql.VarChar(100), required: true },
       { column: 'Description', field: 'description', type: (sql) => sql.VarChar(255) },
@@ -52,6 +55,7 @@ const tableConfigs = [
     table: 'Loans',
     idColumn: 'LoanId',
     idField: 'loanId',
+    timestamp: { column: 'CreatedAt', field: 'createdAt' },
     columns: [
       { column: 'UserId', field: 'userId', type: (sql) => sql.Int, required: true },
       { column: 'ProductId', field: 'productId', type: (sql) => sql.Int, required: true },
@@ -68,6 +72,7 @@ const tableConfigs = [
     table: 'Payments',
     idColumn: 'PaymentId',
     idField: 'paymentId',
+    timestamp: { column: 'CreatedAt', field: 'createdAt' },
     columns: [
       { column: 'LoanId', field: 'loanId', type: (sql) => sql.Int, required: true },
       { column: 'PaymentDate', field: 'paymentDate', type: (sql) => sql.Date, required: true },
@@ -81,10 +86,10 @@ const tableConfigs = [
     table: 'LoanHistory',
     idColumn: 'HistoryId',
     idField: 'historyId',
+    timestamp: { column: 'ChangedAt', field: 'changedAt' },
     columns: [
       { column: 'LoanId', field: 'loanId', type: (sql) => sql.Int, required: true },
       { column: 'StatusId', field: 'statusId', type: (sql) => sql.Int, required: true },
-      { column: 'ChangedAt', field: 'changedAt', type: (sql) => sql.DateTime },
       { column: 'Notes', field: 'notes', type: (sql) => sql.VarChar(255) }
     ]
   }

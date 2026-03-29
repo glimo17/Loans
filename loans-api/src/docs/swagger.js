@@ -62,7 +62,10 @@ const buildSchemas = () => {
     const createSchemaName = `${toPascalCase(table.resource)}Create`;
     const updateSchemaName = `${toPascalCase(table.resource)}Update`;
 
-    const baseFields = [table.idField, ...table.columns.map((column) => column.field), 'createdAt'];
+    const baseFields = [table.idField, ...table.columns.map((column) => column.field)];
+    if (table.timestamp) {
+      baseFields.push(table.timestamp.field);
+    }
     const createFields = table.columns.map((column) => column.field);
 
     const baseProperties = {};
