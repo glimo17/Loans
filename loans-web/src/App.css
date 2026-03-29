@@ -1,0 +1,172 @@
+:root {
+  --bg-1: #f7f2e7;
+  --bg-2: #e7efe3;
+  --panel: rgba(255, 255, 255, 0.9);
+  --ink: #1f2a1f;
+  --muted: #5c675c;
+  --brand: #24543a;
+  --brand-soft: #d6e8da;
+  --danger: #9f1d35;
+  --line: rgba(36, 84, 58, 0.18);
+}
+
+.app-shell {
+  min-height: 100vh;
+  color: var(--ink);
+  padding: 2.5rem 1rem 3rem;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 212, 140, 0.32), transparent 28%),
+    radial-gradient(circle at 80% 10%, rgba(144, 191, 170, 0.4), transparent 30%),
+    linear-gradient(140deg, var(--bg-1), var(--bg-2));
+}
+
+.hero {
+  max-width: 1100px;
+  margin: 0 auto 1.5rem;
+  animation: fade-slide 550ms ease-out;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+}
+
+.hero h1 {
+  margin: 0.4rem 0;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  line-height: 1.1;
+}
+
+.hero p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.loan-form,
+.loan-list-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 16px 35px rgba(24, 39, 28, 0.08);
+  backdrop-filter: blur(6px);
+  animation: fade-slide 650ms ease-out;
+}
+
+.loan-form h2,
+.loan-list-card h2 {
+  margin-top: 0;
+}
+
+.loan-form {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.loan-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.loan-form input {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.62rem 0.75rem;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.loan-form input:focus {
+  outline: 2px solid rgba(36, 84, 58, 0.25);
+  border-color: var(--brand);
+}
+
+button {
+  margin-top: 0.4rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.loan-table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  padding: 0.6rem 0.45rem;
+}
+
+th {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-message {
+  color: var(--muted);
+}
+
+.error-banner {
+  max-width: 1100px;
+  margin: 0 auto 1rem;
+  color: #fff;
+  background: var(--danger);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+}
+
+@keyframes fade-slide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 920px) {
+  .grid {
+    grid-template-columns: 320px 1fr;
+    align-items: start;
+  }
+}
