@@ -353,7 +353,7 @@ function App() {
 
             <section className="phone-content">
               <form className="card form-card" onSubmit={handleLogin}>
-                <h2>Acceso</h2>
+                <h2>¡Hola ya!</h2>
                 <label>
                   Usuario
                   <input
